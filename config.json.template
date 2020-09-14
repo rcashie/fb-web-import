@@ -1,0 +1,5 @@
+{
+    "baseUrl": "http://localhost:35624",
+    "nonce": "<nonce>",
+    "token": "<token>"
+}

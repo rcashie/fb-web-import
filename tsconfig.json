@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "es2017",
+        "module": "es6",
+        "outDir": "build",
+        "sourceMap": true,
+        "alwaysStrict": true,
+        "moduleResolution": "node",
+        "resolveJsonModule" : true,
+    },
+    "files": [ "./fat-sf5/import.ts" ]
+}

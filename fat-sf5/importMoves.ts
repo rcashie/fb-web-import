@@ -109,12 +109,33 @@ function createAttributes(stats: Record<string, string | number>): Array<Attribu
     return attributes;
 }
 
+function buildCommonNameTags(title: string): Array<string> {
+    const tags: Array<string> = [];
+    const items = [
+        { regex: /(?<=\s+|^)LP(?=\s+|$)/gi, tags: ['Light Punch', 'Jab']},
+        { regex: /(?<=\s+|^)MP(?=\s+|$)/gi, tags: ['Medium Punch', 'Strong']},
+        { regex: /(?<=\s+|^)HP(?=\s+|$)/gi, tags: ['Hard Punch', 'Fierce']},
+        { regex: /(?<=\s+|^)LK(?=\s+|$)/gi, tags: ['Light Kick', 'Short']},
+        { regex: /(?<=\s+|^)MK(?=\s+|$)/gi, tags: ['Medium Kick', 'Forward']},
+        { regex: /(?<=\s+|^)HK(?=\s+|$)/gi, tags: ['Hard Kick', 'Roundhouse']},
+    ];
+
+    items.forEach( item => {
+        let result = title.match(item.regex);
+        if (result) {
+            tags.push(...item.tags);
+        }
+    });
+
+    return tags;
+}
+
 function buildProposalsForSet(charId: string, setName: string, set: Record<string, unknown>): Array<Proposal> {
     const proposals: Array<Proposal> = [];
     for (const move in set) {
         // Remove any v-trigger related strings as we add those ourselves
-        let name = move.trim().replace(/\((?:(?:v-trigger\s+\d)|(?:vt))\)/gi, '');
-        let title = capitalize(name);
+        let name = move.replace(/\((?:(?:v-trigger\s+\d)|(?:vt))\)/gi, '');
+        let title = capitalize(name).trim();
         let target = `${charId}.${sanitizeForId(name)}`;
 
         if (setName) {
@@ -139,7 +160,7 @@ function buildProposalsForSet(charId: string, setName: string, set: Record<strin
                 title,
                 attributes,
                 media: {},
-                tags: []
+                tags: buildCommonNameTags(title)
             }
         });
     }

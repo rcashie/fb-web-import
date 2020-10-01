@@ -14,7 +14,7 @@ export async function applyPlans(plans: Array<Plan>, apiContext: ApiContext): Pr
         return;
     }
 
-    console.log('Applying plans...');
+    console.log('Executing plans...');
     for (let i = 0; i < plans.length; ++i) {
         const plan = plans[i];
         if (plan.type === ChangeType.IgnoredNew || plan.type === ChangeType.None) {

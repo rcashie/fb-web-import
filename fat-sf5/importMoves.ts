@@ -112,18 +112,23 @@ function createAttributes(stats: Record<string, string | number>): Array<Attribu
 function buildCommonNameTags(title: string): Array<string> {
     const tags: Array<string> = [];
     const items = [
-        { regex: /(?<=\s+|^)LP(?=\s+|$)/gi, tags: ['Light Punch', 'Jab']},
-        { regex: /(?<=\s+|^)MP(?=\s+|$)/gi, tags: ['Medium Punch', 'Strong']},
-        { regex: /(?<=\s+|^)HP(?=\s+|$)/gi, tags: ['Hard Punch', 'Fierce']},
-        { regex: /(?<=\s+|^)LK(?=\s+|$)/gi, tags: ['Light Kick', 'Short']},
-        { regex: /(?<=\s+|^)MK(?=\s+|$)/gi, tags: ['Medium Kick', 'Forward']},
-        { regex: /(?<=\s+|^)HK(?=\s+|$)/gi, tags: ['Hard Kick', 'Roundhouse']},
+        { target: 'LP', substitutes: ['Light Punch', 'Jab']},
+        { target: 'MP', substitutes: ['Medium Punch', 'Strong']},
+        { target: 'HP', substitutes: ['Hard Punch', 'Fierce']},
+        { target: 'LK', substitutes: ['Light Kick', 'Short']},
+        { target: 'MK', substitutes: ['Medium Kick', 'Forward']},
+        { target: 'HK', substitutes: ['Hard Kick', 'Roundhouse']},
+        { target: 'Crouch HK', substitutes: ['Sweep']},
     ];
 
-    items.forEach( item => {
-        let result = title.match(item.regex);
-        if (result) {
-            tags.push(...item.tags);
+    items.forEach(item => {
+        const target = item.target;
+        let match = title.match(RegExp(`(?<=\\b)${target}(?=\\b)`, 'i'));
+        if (match) {
+            const index = match.index;
+            item.substitutes.forEach(substitute => {
+                tags.push(title.substr(0, index) + substitute + title.substr(index + target.length));
+            })
         }
     });
 

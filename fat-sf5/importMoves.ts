@@ -109,8 +109,8 @@ function createAttributes(stats: Record<string, string | number>): Array<Attribu
     return attributes;
 }
 
-function buildCommonNameTags(title: string): Array<string> {
-    const tags: Array<string> = [];
+function buildCommonNames(title: string): Array<string> {
+    const names: Array<string> = [];
     const items = [
         { target: 'LP', substitutes: ['Light Punch', 'Jab']},
         { target: 'MP', substitutes: ['Medium Punch', 'Strong']},
@@ -127,12 +127,12 @@ function buildCommonNameTags(title: string): Array<string> {
         if (match) {
             const index = match.index;
             item.substitutes.forEach(substitute => {
-                tags.push(title.substr(0, index) + substitute + title.substr(index + target.length));
+                names.push(title.substr(0, index) + substitute + title.substr(index + target.length));
             })
         }
     });
 
-    return tags;
+    return names;
 }
 
 function buildProposalsForSet(charId: string, setName: string, set: Record<string, unknown>): Array<Proposal> {
@@ -165,7 +165,7 @@ function buildProposalsForSet(charId: string, setName: string, set: Record<strin
                 title,
                 attributes,
                 media: {},
-                tags: buildCommonNameTags(title)
+                names: buildCommonNames(title)
             }
         });
     }

@@ -109,32 +109,32 @@ function getAttributeChanges(old: Array<Attribute>, now: Array<Attribute>): Arra
     return changes;
 }
 
-function getTagChanges(old: Array<string>, now: Array<string>): Array<Change> {
+function getNameChanges(old: Array<string>, now: Array<string>): Array<Change> {
     const changes: Array<Change> = [];
     const oldSet = new Set<string>();
     const nowSet = new Set<string>();
     old.forEach(t => oldSet.add(t));
     now.forEach(t => nowSet.add(t));
 
-    old.forEach(tag => {
-        if (!nowSet.has(tag)) {
-            // Removed tag
+    old.forEach(name => {
+        if (!nowSet.has(name)) {
+            // Removed name
             changes.push({
-                property: 'tags',
-                oldValue: tag,
+                property: 'names',
+                oldValue: name,
                 newValue: '',
                 type: ChangeType.Removed
             });
         }
     });
 
-    now.forEach(tag => {
-        if (!oldSet.has(tag)) {
-            // New tag
+    now.forEach(name => {
+        if (!oldSet.has(name)) {
+            // New name
             changes.push({
-                property: 'tags',
+                property: 'names',
                 oldValue: '',
-                newValue: tag,
+                newValue: name,
                 type: ChangeType.New
             });
         }
@@ -154,7 +154,7 @@ function getDocumentChanges(old: Document, now: Document): Array<Change> {
         });
     }
 
-    changes.push(...getTagChanges(old.tags, now.tags));
+    changes.push(...getNameChanges(old.names, now.names));
     changes.push(...getAttributeChanges(old.attributes, now.attributes));
     return changes;
 }

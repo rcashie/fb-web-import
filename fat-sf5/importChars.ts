@@ -47,7 +47,7 @@ function buildCharProposals(gameId: string, dataSource: Record<string, unknown>)
                 title: capitalize(name),
                 attributes: createAttributes(charDataSource.stats as Record<string, string | number>),
                 media: {},
-                tags: []
+                names: []
             }
         };
 

@@ -23,7 +23,7 @@ export interface Document {
     title: string,
     attributes: Array<Attribute>,
     media: unknown,
-    tags: Array<string>
+    names: Array<string>
 }
 
 export interface Proposal {

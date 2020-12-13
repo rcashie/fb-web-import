@@ -8,7 +8,7 @@ export function getGameProposal(): Proposal {
         document: {
             title: 'Street Fighter V',
             type: DocumentType.Game,
-            tags: [],
+            names: [],
             media: {},
             attributes: [
                 {

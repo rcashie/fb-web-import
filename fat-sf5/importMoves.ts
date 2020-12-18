@@ -109,7 +109,34 @@ function createAttributes(stats: Record<string, string | number>): Array<Attribu
     return attributes;
 }
 
+// Removes target words from the first string if they exist in the second
+function removeTargetWords(targets: Set<String>, first: string, second: string): string {
+    const getWordsInPhrase = (phrase: string) => {
+        const regex = /[^\s]+/g
+        const words = new Set<string>();
+        var match = regex.exec(phrase);
+        while (match != null) {
+            words.add(match[0]);
+            match = regex.exec(phrase);
+        }
+
+        return words;
+    }
+
+    var result = "";
+    const firstWords = getWordsInPhrase(first);
+    const secondWords = getWordsInPhrase(second);
+    firstWords.forEach(word => {
+        if (!targets.has(word) || !secondWords.has(word)) {
+            result = `${result} ${word}`.trimLeft();
+        }
+    })
+
+    return result;
+}
+
 function buildCommonNames(title: string): Array<string> {
+    const duplicateWords = new Set<String>(['Punch', 'Kick']);
     const names: Array<string> = [];
     const items = [
         { target: 'LP', substitutes: ['Light Punch', 'Jab']},
@@ -127,6 +154,8 @@ function buildCommonNames(title: string): Array<string> {
         if (match) {
             const index = match.index;
             item.substitutes.forEach(substitute => {
+                // Remove words from the substitute that already exist in the title
+                substitute = removeTargetWords(duplicateWords, substitute, title);
                 names.push(title.substr(0, index) + substitute + title.substr(index + target.length));
             })
         }
